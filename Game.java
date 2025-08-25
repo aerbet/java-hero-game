@@ -2,7 +2,8 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Game {
-    
+    static Random rnd = new Random();
+    static int enemyChoice = rnd.nextInt(2) + 1;
 
     public static void main(String[] args) {
         startGame();
@@ -11,12 +12,9 @@ public class Game {
     public static void startGame() {
         Dragon dragon = new Dragon(2000, 120, 220, 0);
         Dragon hellHound = new Dragon(1500, 100, 190, 30);
-        Hero hero = new Hero(1000, 100, 150, 250, 150, false);
+        Hero hero = new Hero(10000, 100, 150, 250, 150, false);
 
-        Random rnd = new Random();
-        int enemy = rnd.nextInt(2) + 1;
-
-        if (enemy == 1) {
+        if (enemyChoice == 1) {
             print("Компьютер выбрал в качестве противника -- Дракона --");
             chooseEnemy(hero, dragon);
         } else {
@@ -50,7 +48,6 @@ public class Game {
                 case "d":
                     hero.setShieldUp(true);
                     printLabel();
-                    print("Герой поднял щит");
                     break;
                 case "s":
                     hero.setShieldUp(false);
@@ -63,10 +60,16 @@ public class Game {
             }
 
             if (enemy.getHp() > 0) {
-                enemy.dragonAttack(hero);
+
+                if (enemyChoice == 1) {
+                    enemy.fireBall(hero);
+                } else {
+                    enemy.dragonAttack(hero);
+                }
+
                 System.out.printf("<<< У героя осталось: %s HP >>>%n", hero.getHp());
                 printLabel();
-
+                
                 if (hero.getHp() <= 0) {
                     print("Герой умер, противник победил!");
                     printLabel();
